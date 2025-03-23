@@ -2,13 +2,13 @@ import 'dart:math';
 
 import 'package:flame/components.dart';
 
+import 'game.dart';
+
 class Background extends SpriteComponent with HasGameReference<MyPhysicsGame> {
   Background({required super.sprite})
       : super(
           anchor: Anchor.center,
-          position: Vector2.all(
-            0,
-          ),
+          position: Vector2.all(0),
         );
 
   @override

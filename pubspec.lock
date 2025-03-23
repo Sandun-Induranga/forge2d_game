@@ -65,6 +65,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.18.2+4"
+  flame_kenney_xml:
+    dependency: "direct main"
+    description:
+      name: flame_kenney_xml
+      sha256: "1e91e7bd97e07ee1b01f6cf36b5563c311e2c90cb4d632c6f68767294112ac03"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1+4"
   flutter:
     dependency: "direct main"
     description: flutter
