@@ -37,3 +37,34 @@ enum BrickSize {
 }
 
 enum BrickDamage { none, some, lots }
+
+Map<BrickDamage, String> brickFileNames(BrickType type, BrickSize size) {
+  return switch ((type, size)) {
+    (BrickType.explosive, BrickSize.size70x70) => {
+        BrickDamage.none: 'elementExplosive009.png',
+        BrickDamage.some: 'elementExplosive012.png',
+        BrickDamage.lots: 'elementExplosive050.png',
+      },
+    (BrickType.glass, BrickSize.size140x70) => {
+        BrickDamage.none: 'elementGlass010.png',
+        BrickDamage.some: 'elementGlass013.png',
+        BrickDamage.lots: 'elementGlass48.png',
+      },
+    (BrickType.metal, BrickSize.size140x220) => {
+        BrickDamage.none: 'elementMetal009.png',
+        BrickDamage.some: 'elementMetal012.png',
+        BrickDamage.lots: 'elementMetal047.png',
+      },
+    (BrickType.stone, BrickSize.size140x220) => {
+        BrickDamage.none: 'elementStone011.png',
+        BrickDamage.some: 'elementStone014.png',
+        BrickDamage.lots: 'elementStone054.png',
+      },
+    (BrickType.wood, BrickSize.size140x220) => {
+        BrickDamage.none: 'elementWood020.png',
+        BrickDamage.some: 'elementWood025.png',
+        BrickDamage.lots: 'elementWood052.png',
+      },
+    (_, _) => throw ArgumentError('Invalid brick type and size'),
+  };
+}
