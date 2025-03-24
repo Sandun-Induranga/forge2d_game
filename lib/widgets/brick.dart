@@ -35,3 +35,5 @@ enum BrickSize {
 
   static BrickSize get randomSize => values[Random().nextInt(values.length)];
 }
+
+enum BrickDamage { none, some, lots }
