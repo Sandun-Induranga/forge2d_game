@@ -112,4 +112,17 @@ class Brick extends BodyComponent {
     _damage = value;
     _spriteComponent.sprite = _sprites[value]!;
   }
+
+  @override
+  Future<void> onLoad() {
+    _spriteComponent = SpriteComponent(
+      sprite: _sprites[_damage],
+      size: size.size.toVector2() / 10 * brickScale,
+      anchor: Anchor.center,
+      scale: Vector2.all(1),
+      position: Vector2(0, 0),
+    );
+    add(_spriteComponent);
+    return super.onLoad();
+  }
 }
