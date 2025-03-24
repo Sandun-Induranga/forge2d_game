@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:flame/components.dart';
 import 'package:flame/extensions.dart' as ui;
+import 'package:flame_forge2d/flame_forge2d.dart';
 
 const brickScale = 0.5;
 
@@ -67,4 +69,47 @@ Map<BrickDamage, String> brickFileNames(BrickType type, BrickSize size) {
       },
     (_, _) => throw ArgumentError('Invalid brick type and size'),
   };
+}
+
+class Brick extends BodyComponent {
+  Brick({
+    required this.type,
+    required this.size,
+    required BrickDamage damage,
+    required Vector2 position,
+    required Map<BrickDamage, Sprite> sprites,
+  })  : _damage = damage,
+        _sprites = sprites,
+        super(
+          renderBody: false,
+          bodyDef: BodyDef()
+            ..position = position
+            ..type = BodyType.dynamic,
+          fixtureDefs: [
+            FixtureDef(
+              PolygonShape()
+                ..setAsBoxXY(
+                  size.size.width * brickScale / 20,
+                  size.size.height * brickScale / 20,
+                ),
+            )
+              ..restitution = 0.4
+              ..density = type.density
+              ..friction = type.friction,
+          ],
+        );
+
+  late final SpriteComponent _spriteComponent;
+
+  final BrickType type;
+  final BrickSize size;
+  final Map<BrickDamage, Sprite> _sprites;
+  BrickDamage _damage;
+
+  BrickDamage get damage => _damage;
+
+  set damage(BrickDamage value) {
+    _damage = value;
+    _spriteComponent.sprite = _sprites[value]!;
+  }
 }
