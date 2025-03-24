@@ -23,7 +23,7 @@ class MyPhysicsGame extends Forge2DGame {
       width: 800,
       height: 600,
     );
-    camera = cameraComponent; // Assign to the game's camera property
+    camera = cameraComponent;
     await add(cameraComponent);
 
     final [backgroundImage, aliensImage, elementsImage, tilesImage] = await [
