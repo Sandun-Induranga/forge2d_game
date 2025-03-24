@@ -7,6 +7,8 @@ import 'package:forge2d_game/widgets/background.dart';
 import 'package:xml/xml.dart';
 import 'package:xml/xpath.dart';
 
+import 'ground.dart';
+
 class MyPhysicsGame extends Forge2DGame {
   MyPhysicsGame()
       : super(
@@ -25,6 +27,7 @@ class MyPhysicsGame extends Forge2DGame {
     );
     camera = cameraComponent;
     await add(cameraComponent);
+    cameraComponent.viewfinder.zoom = 10.0;
 
     final [backgroundImage, aliensImage, elementsImage, tilesImage] = await [
       images.load('colored_grass.png'),
@@ -49,8 +52,23 @@ class MyPhysicsGame extends Forge2DGame {
     );
 
     await world.add(Background(sprite: Sprite(backgroundImage)));
+    await addGround();
 
     return super.onLoad();
+  }
+
+  Future<void> addGround() async {
+    final groundY = camera.visibleWorldRect.bottom - (groundSize / 4);
+    final startX = camera.visibleWorldRect.left;
+    final endX = camera.visibleWorldRect.right;
+
+    return world.addAll([
+      for (var i = startX; i <= endX; i += groundSize)
+        Ground(
+          Vector2(i, groundY),
+          tiles.getSprite('grass.png'),
+        ),
+    ]);
   }
 }
 
