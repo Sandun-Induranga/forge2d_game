@@ -11,10 +11,6 @@ class MyPhysicsGame extends Forge2DGame {
   MyPhysicsGame()
       : super(
           gravity: Vector2(0, 10),
-          camera: CameraComponent.withFixedResolution(
-            width: 800,
-            height: 600,
-          ),
         );
 
   late final XmlSpriteSheet aliens;
@@ -23,6 +19,13 @@ class MyPhysicsGame extends Forge2DGame {
 
   @override
   Future<void> onLoad() async {
+    final cameraComponent = CameraComponent.withFixedResolution(
+      width: 800,
+      height: 600,
+    );
+    camera = cameraComponent; // Assign to the game's camera property
+    await add(cameraComponent);
+
     final [backgroundImage, aliensImage, elementsImage, tilesImage] = await [
       images.load('colored_grass.png'),
       images.load('spritesheet_aliens.png'),
