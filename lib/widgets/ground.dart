@@ -16,5 +16,13 @@ class Ground extends BodyComponent {
               friction: 0.3,
             ),
           ],
+          children: [
+            SpriteComponent(
+              sprite: sprite,
+              size: Vector2.all(groundSize),
+              anchor: Anchor.center,
+              position: Vector2(0, 0),
+            )
+          ],
         );
 }
