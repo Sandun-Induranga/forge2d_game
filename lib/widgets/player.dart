@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:characters/characters.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
@@ -14,7 +15,7 @@ enum PlayerColor {
   yellow;
 
   String get fileName {
-    return 'alien${toString().split('.').last.toUpperCase()}_round.png';
+    return 'alien${toString().split('.').last.capitalize}_round.png';
   }
 
   static PlayerColor get randomColor =>
@@ -109,4 +110,9 @@ class Player extends BodyComponent with DragCallbacks {
       ));
     }
   }
+}
+
+extension on String {
+  String get capitalize =>
+      characters.first.toUpperCase() + characters.skip(1).toLowerCase().join();
 }
