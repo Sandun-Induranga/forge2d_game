@@ -41,33 +41,55 @@ enum BrickSize {
 enum BrickDamage { none, some, lots }
 
 Map<BrickDamage, String> brickFileNames(BrickType type, BrickSize size) {
-  return switch ((type, size)) {
-    (BrickType.explosive, BrickSize.size70x70) => {
-        BrickDamage.none: 'elementExplosive009.png',
-        BrickDamage.some: 'elementExplosive012.png',
-        BrickDamage.lots: 'elementExplosive050.png',
-      },
-    (BrickType.glass, BrickSize.size140x70) => {
-        BrickDamage.none: 'elementGlass010.png',
-        BrickDamage.some: 'elementGlass013.png',
-        BrickDamage.lots: 'elementGlass48.png',
-      },
-    (BrickType.metal, BrickSize.size140x220) => {
-        BrickDamage.none: 'elementMetal009.png',
-        BrickDamage.some: 'elementMetal012.png',
-        BrickDamage.lots: 'elementMetal047.png',
-      },
-    (BrickType.stone, BrickSize.size140x220) => {
-        BrickDamage.none: 'elementStone011.png',
-        BrickDamage.some: 'elementStone014.png',
-        BrickDamage.lots: 'elementStone054.png',
-      },
-    (BrickType.wood, BrickSize.size140x220) => {
-        BrickDamage.none: 'elementWood020.png',
-        BrickDamage.some: 'elementWood025.png',
-        BrickDamage.lots: 'elementWood052.png',
-      },
-    (_, _) => throw ArgumentError('Invalid brick type and size'),
+  final baseName = switch (type) {
+    BrickType.explosive => 'elementExplosive',
+    BrickType.glass => 'elementGlass',
+    BrickType.metal => 'elementMetal',
+    BrickType.stone => 'elementStone',
+    BrickType.wood => 'elementWood',
+  };
+
+  return switch (size) {
+    BrickSize.size70x70 => {
+      BrickDamage.none: '${baseName}001.png',
+      BrickDamage.some: '${baseName}010.png',
+      BrickDamage.lots: '${baseName}020.png',
+    },
+    BrickSize.size140x70 => {
+      BrickDamage.none: '${baseName}000.png',
+      BrickDamage.some: '${baseName}007.png',
+      BrickDamage.lots: '${baseName}013.png',
+    },
+    BrickSize.size220x70 => {
+      BrickDamage.none: '${baseName}013.png',
+      BrickDamage.some: '${baseName}016.png',
+      BrickDamage.lots: '${baseName}029.png',
+    },
+    BrickSize.size70x140 => {
+      BrickDamage.none: '${baseName}017.png',
+      BrickDamage.some: '${baseName}033.png',
+      BrickDamage.lots: '${baseName}038.png',
+    },
+    BrickSize.size140x140 => {
+      BrickDamage.none: '${baseName}018.png',
+      BrickDamage.some: '${baseName}034.png',
+      BrickDamage.lots: '${baseName}039.png',
+    },
+    BrickSize.size220x140 => {
+      BrickDamage.none: '${baseName}019.png',
+      BrickDamage.some: '${baseName}035.png',
+      BrickDamage.lots: '${baseName}040.png',
+    },
+    BrickSize.size70x220 => {
+      BrickDamage.none: '${baseName}020.png',
+      BrickDamage.some: '${baseName}036.png',
+      BrickDamage.lots: '${baseName}041.png',
+    },
+    BrickSize.size140x220 => {
+      BrickDamage.none: '${baseName}021.png',
+      BrickDamage.some: '${baseName}037.png',
+      BrickDamage.lots: '${baseName}042.png',
+    },
   };
 }
 
