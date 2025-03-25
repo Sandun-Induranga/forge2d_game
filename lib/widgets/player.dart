@@ -71,4 +71,16 @@ class Player extends BodyComponent with DragCallbacks {
       removeFromParent();
     }
   }
+
+  Vector2 _dragStart = Vector2.zero();
+  Vector2 _dragDelta = Vector2.zero();
+  Vector2 get dragDelta => _dragDelta;
+
+  @override
+  void onDragStart(DragStartEvent event) {
+    super.onDragStart(event);
+    if(body.bodyType == BodyType.static) {
+      _dragStart = event.localPosition;
+    }
+  }
 }
