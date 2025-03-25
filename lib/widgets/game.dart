@@ -6,6 +6,7 @@ import 'package:flame/extensions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 import 'package:forge2d_game/widgets/background.dart';
+import 'package:forge2d_game/widgets/player.dart';
 import 'package:xml/xml.dart';
 import 'package:xml/xpath.dart';
 
@@ -15,8 +16,8 @@ import 'ground.dart';
 class MyPhysicsGame extends Forge2DGame {
   MyPhysicsGame()
       : super(
-    gravity: Vector2(0, 10),
-  );
+          gravity: Vector2(0, 10),
+        );
 
   late final XmlSpriteSheet aliens;
   late final XmlSpriteSheet elements;
@@ -57,6 +58,7 @@ class MyPhysicsGame extends Forge2DGame {
     await world.add(Background(sprite: Sprite(backgroundImage)));
     await addGround();
     unawaited(addBricks());
+    await addPlayer();
 
     return super.onLoad();
   }
@@ -65,7 +67,7 @@ class MyPhysicsGame extends Forge2DGame {
     final groundY = camera.visibleWorldRect.height / 2 - groundSize / 2;
     final visibleWidth = camera.visibleWorldRect.width; // 80.0
     final startX = -visibleWidth / 2; // -40.0
-    final endX = visibleWidth / 2;    // 40.0
+    final endX = visibleWidth / 2; // 40.0
 
     return world.addAll([
       for (var i = startX; i <= endX; i += groundSize)
@@ -91,11 +93,10 @@ class MyPhysicsGame extends Forge2DGame {
                 (_random.nextDouble() * 5 - 2.5),
             0),
         sprites: brickFileNames(type, size).map(
-              (key, value) =>
-              MapEntry(
-                key,
-                elements.getSprite(value),
-              ),
+          (key, value) => MapEntry(
+            key,
+            elements.getSprite(value),
+          ),
         ),
       );
       await world.add(brick);
@@ -103,6 +104,21 @@ class MyPhysicsGame extends Forge2DGame {
     }
   }
 
+  Future<void> addPlayer() async {
+    final player = Player(
+      Vector2(camera.visibleWorldRect.left * 2 / 3, 0),
+      aliens.getSprite(PlayerColor.randomColor.fileName),
+    );
+    await world.add(player); // Add to the world
+  }
+
+  @override
+  update(double dt) {
+    super.update(dt);
+    if (isMounted && world.children.whereType<Brick>().isEmpty) {
+      addPlayer();
+    }
+  }
 }
 
 class XmlSpriteSheet {
