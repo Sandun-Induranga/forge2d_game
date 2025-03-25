@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 
@@ -74,13 +75,38 @@ class Player extends BodyComponent with DragCallbacks {
 
   Vector2 _dragStart = Vector2.zero();
   Vector2 _dragDelta = Vector2.zero();
+
   Vector2 get dragDelta => _dragDelta;
 
   @override
   void onDragStart(DragStartEvent event) {
     super.onDragStart(event);
-    if(body.bodyType == BodyType.static) {
+    if (body.bodyType == BodyType.static) {
       _dragStart = event.localPosition;
+    }
+  }
+
+  @override
+  void onDragUpdate(DragUpdateEvent event) {
+    super.onDragUpdate(event);
+    if (body.bodyType == BodyType.static) {
+      _dragDelta = event.localEndPosition - _dragStart;
+    }
+  }
+
+  @override
+  void onDragEnd(DragEndEvent event) {
+    super.onDragEnd(event);
+    if (body.bodyType == BodyType.static) {
+      children
+          .whereType<CustomPainterComponent>()
+          .firstOrNull
+          ?.removeFromParent();
+      body.setType(BodyType.dynamic);
+      body.applyLinearImpulse(_dragDelta * -50);
+      add(RemoveEffect(
+        delay: 5.0,
+      ));
     }
   }
 }
