@@ -5,6 +5,7 @@ import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
+import 'package:flutter/material.dart';
 
 const playerSize = 5.0;
 
@@ -115,4 +116,28 @@ class Player extends BodyComponent with DragCallbacks {
 extension on String {
   String get capitalize =>
       characters.first.toUpperCase() + characters.skip(1).toLowerCase().join();
+}
+
+class _DragPainter extends CustomPainter {
+  _DragPainter(this.player);
+
+  final Player player;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (player.dragDelta != Vector2.zero) {
+      var center = size.center(Offset.zero);
+      canvas.drawLine(
+        center,
+        center + (player.dragDelta * -1).toOffset(),
+        Paint()
+          ..color = Colors.orange.withOpacity(0.7)
+          ..strokeWidth = 0.4
+          ..strokeCap = StrokeCap.round,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
