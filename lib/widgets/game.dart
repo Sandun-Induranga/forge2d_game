@@ -53,7 +53,7 @@ class MyPhysicsGame extends Forge2DGame {
       tilesImage,
       await rootBundle.loadString('assets/spritesheet_tiles.xml'),
     );
-
+    await world.add(Ground(Vector2(0, 0), tiles.getSprite('grass.png')));
     await world.add(Background(sprite: Sprite(backgroundImage)));
     await addGround();
     unawaited(addBricks());
@@ -62,9 +62,10 @@ class MyPhysicsGame extends Forge2DGame {
   }
 
   Future<void> addGround() async {
-    final groundY = camera.visibleWorldRect.bottom - (groundSize / 4);
-    final startX = camera.visibleWorldRect.left;
-    final endX = camera.visibleWorldRect.right;
+    final groundY = camera.visibleWorldRect.height / 2 - groundSize / 2;
+    final visibleWidth = camera.visibleWorldRect.width; // 80.0
+    final startX = -visibleWidth / 2; // -40.0
+    final endX = visibleWidth / 2;    // 40.0
 
     return world.addAll([
       for (var i = startX; i <= endX; i += groundSize)
