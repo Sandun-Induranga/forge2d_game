@@ -42,13 +42,33 @@ class Player extends BodyComponent with DragCallbacks {
 
   @override
   Future<void> onLoad() {
-    final spriteComponent = SpriteComponent(
-      sprite: _sprite,
-      size: Vector2.all(playerSize),
-      anchor: Anchor.center,
-      position: Vector2(0, 0),
-    );
-    add(spriteComponent);
+    addAll([
+      CustomPainterComponent(
+        size: Vector2.all(playerSize),
+        anchor: Anchor.center,
+        painter: _DragPainter(this),
+        position: Vector2(0, 0),
+      ),
+      SpriteComponent(
+        sprite: _sprite,
+        size: Vector2.all(playerSize),
+        anchor: Anchor.center,
+        position: Vector2(0, 0),
+      ),
+    ]);
     return super.onLoad();
+  }
+
+  @override
+  update(double dt) {
+    super.update(dt);
+    if (!body.isAwake) {
+      removeFromParent();
+    }
+
+    if (position.x > camera.visibleWorldRect.right + 10 ||
+        position.x < camera.visibleWorldRect.left - 10) {
+      removeFromParent();
+    }
   }
 }
