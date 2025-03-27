@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flame/components.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
+import 'package:flutter/material.dart';
 
 const enemySize = 5.0;
 
@@ -27,7 +28,7 @@ enum EnemyColor {
       EnemyColor.values[Random().nextInt(EnemyColor.values.length)];
 
   String get fileName =>
-      'alien${color.capitalize}${boss ? 'suit' : 'square'}.png';
+      'alien${color.capitalize}${boss ? '_suit' : '_square'}.png';
 }
 
 class Enemy extends BodyComponent with ContactCallbacks {
@@ -79,5 +80,6 @@ class Enemy extends BodyComponent with ContactCallbacks {
 }
 
 extension on String {
-  String capitalize() => '${this[0].toUpperCase()}${substring(1)}';
+  String get capitalize => characters.first.toUpperCase() + characters.skip(1).toLowerCase().join();
+  // String capitalize() => this[0].toUpperCase() + substring(1).toLowerCase();
 }

@@ -114,19 +114,19 @@ class MyPhysicsGame extends Forge2DGame {
     await world.add(player);
   }
 
-  Future<void> addEnemies() async {
-    for (var i = 0; i < 5; i++) {
-      final enemy = Enemy(
-        Vector2(
-          camera.visibleWorldRect.right / 3 + (_random.nextDouble() * 5 - 2.5),
-          0,
-        ),
-        aliens.getSprite(EnemyColor.randomColor.fileName),
-      );
-      await world.add(enemy);
-      await Future.delayed(const Duration(milliseconds: 500));
-    }
-  }
+  // Future<void> addEnemies() async {
+  //   for (var i = 0; i < 5; i++) {
+  //     final enemy = Enemy(
+  //       Vector2(
+  //         camera.visibleWorldRect.right / 3 + (_random.nextDouble() * 5 - 2.5),
+  //         0,
+  //       ),
+  //       aliens.getSprite(EnemyColor.randomColor.fileName),
+  //     );
+  //     await world.add(enemy);
+  //     await Future.delayed(const Duration(milliseconds: 500));
+  //   }
+  // }
 
   @override
   update(double dt) {
@@ -136,29 +136,50 @@ class MyPhysicsGame extends Forge2DGame {
         world.children.whereType<Enemy>().isNotEmpty) {
       addPlayer();
     }
-    if(isMounted && enemiesFullyAdded && world.children.whereType<Enemy>().isEmpty && world.children.whereType<TextComponent>().isEmpty){ {
-      world.addAll(
-        [
-          (position: Vector2(0.5, 0.5), color: Colors.white),
-          (position: Vector2.zero(), color: Colors.orangeAccent),
-        ].map((data) => TextComponent(
-            text: 'You win!',
-            textRenderer: TextPaint(
-              style: TextStyle(
-                color: data.color,
-                fontSize: 16.0,
+    if (isMounted &&
+        enemiesFullyAdded &&
+        world.children.whereType<Enemy>().isEmpty &&
+        world.children.whereType<TextComponent>().isEmpty) {
+      {
+        world.addAll(
+          [
+            (position: Vector2(0.5, 0.5), color: Colors.white),
+            (position: Vector2.zero(), color: Colors.orangeAccent),
+          ].map(
+            (data) => TextComponent(
+              text: 'You win!',
+              textRenderer: TextPaint(
+                style: TextStyle(
+                  color: data.color,
+                  fontSize: 16.0,
+                ),
               ),
+              position: data.position,
+              anchor: Anchor.center,
             ),
-            position: data.position,
-          anchor: Anchor.center,
           ),
-        ),
-      );
+        );
+      }
     }
   }
-}
 
-var enemiesFullyAdded = false;
+  var enemiesFullyAdded = false;
+
+  Future<void> addEnemies() async {
+    await Future.delayed(const Duration(seconds: 2));
+    for (var i = 0; i < 3; i++) {
+      await world.add(Enemy(
+        Vector2(
+          camera.visibleWorldRect.right / 3 + (_random.nextDouble() * 7 - 3.5),
+          (_random.nextDouble() * 3),
+        ),
+        aliens.getSprite(EnemyColor.randomColor.fileName),
+      ));
+      await Future.delayed(const Duration(seconds: 1));
+    }
+    enemiesFullyAdded = true;
+  }
+}
 
 class XmlSpriteSheet {
   XmlSpriteSheet(this.image, String xml) {
