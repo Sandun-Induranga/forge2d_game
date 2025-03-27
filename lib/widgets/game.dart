@@ -109,13 +109,13 @@ class MyPhysicsGame extends Forge2DGame {
       Vector2(camera.visibleWorldRect.left * 2 / 3, 0),
       aliens.getSprite(PlayerColor.randomColor.fileName),
     );
-    await world.add(player); // Add to the world
+    await world.add(player);
   }
 
   @override
   update(double dt) {
     super.update(dt);
-    if (isMounted && world.children.whereType<Brick>().isEmpty) {
+    if (isMounted && world.children.whereType<Player>().isEmpty) {
       addPlayer();
     }
   }
