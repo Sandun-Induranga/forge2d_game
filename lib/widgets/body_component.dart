@@ -1,4 +1,4 @@
-import 'package:flame_forge2d/body_component.dart';
+import 'package:flame_forge2d/flame_forge2d.dart';
 
 class BodyComponentWithUserData extends BodyComponent {
   BodyComponentWithUserData({
@@ -10,4 +10,11 @@ class BodyComponentWithUserData extends BodyComponent {
     super.priority,
     super.renderBody,
   });
+
+  @override
+  Body createBody() {
+    final body = world.createBody(super.bodyDef!)..userData = this;
+    fixtureDefs?.forEach(body.createFixture);
+    return body;
+  }
 }
