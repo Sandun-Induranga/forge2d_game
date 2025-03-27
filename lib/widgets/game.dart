@@ -4,8 +4,10 @@ import 'dart:ui' as ui;
 import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/components.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:forge2d_game/widgets/background.dart';
+import 'package:forge2d_game/widgets/enemy.dart';
 import 'package:forge2d_game/widgets/player.dart';
 import 'package:xml/xml.dart';
 import 'package:xml/xpath.dart';
@@ -57,7 +59,7 @@ class MyPhysicsGame extends Forge2DGame {
     await world.add(Ground(Vector2(0, 0), tiles.getSprite('grass.png')));
     await world.add(Background(sprite: Sprite(backgroundImage)));
     await addGround();
-    unawaited(addBricks());
+    unawaited(addBricks().then((_) => addEnemies()));
     await addPlayer();
 
     return super.onLoad();
@@ -112,14 +114,51 @@ class MyPhysicsGame extends Forge2DGame {
     await world.add(player);
   }
 
+  Future<void> addEnemies() async {
+    for (var i = 0; i < 5; i++) {
+      final enemy = Enemy(
+        Vector2(
+          camera.visibleWorldRect.right / 3 + (_random.nextDouble() * 5 - 2.5),
+          0,
+        ),
+        aliens.getSprite(EnemyColor.randomColor.fileName),
+      );
+      await world.add(enemy);
+      await Future.delayed(const Duration(milliseconds: 500));
+    }
+  }
+
   @override
   update(double dt) {
     super.update(dt);
-    if (isMounted && world.children.whereType<Player>().isEmpty) {
+    if (isMounted &&
+        world.children.whereType<Player>().isEmpty &&
+        world.children.whereType<Enemy>().isNotEmpty) {
       addPlayer();
+    }
+    if(isMounted && enemiesFullyAdded && world.children.whereType<Enemy>().isEmpty && world.children.whereType<TextComponent>().isEmpty){ {
+      world.addAll(
+        [
+          (position: Vector2(0.5, 0.5), color: Colors.white),
+          (position: Vector2.zero(), color: Colors.orangeAccent),
+        ].map((data) => TextComponent(
+            text: 'You win!',
+            textRenderer: TextPaint(
+              style: TextStyle(
+                color: data.color,
+                fontSize: 16.0,
+              ),
+            ),
+            position: data.position,
+          anchor: Anchor.center,
+          ),
+        ),
+      );
     }
   }
 }
+
+var enemiesFullyAdded = false;
 
 class XmlSpriteSheet {
   XmlSpriteSheet(this.image, String xml) {

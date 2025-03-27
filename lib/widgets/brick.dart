@@ -4,6 +4,8 @@ import 'package:flame/components.dart';
 import 'package:flame/extensions.dart' as ui;
 import 'package:flame_forge2d/flame_forge2d.dart';
 
+import 'body_component.dart';
+
 const brickScale = 0.5;
 
 enum BrickType {
@@ -93,7 +95,7 @@ Map<BrickDamage, String> brickFileNames(BrickType type, BrickSize size) {
   };
 }
 
-class Brick extends BodyComponent {
+class Brick extends BodyComponentWithUserData {
   Brick({
     required this.type,
     required this.size,
