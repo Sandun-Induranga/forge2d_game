@@ -30,7 +30,7 @@ enum EnemyColor {
       'alien${color.capitalize}${boss ? 'suit' : 'square'}.png';
 }
 
-class Enemy extends BodyComponent with ContactCallbacks{
+class Enemy extends BodyComponent with ContactCallbacks {
   Enemy(Vector2 position, Sprite sprite)
       : super(
           renderBody: false,
@@ -39,17 +39,32 @@ class Enemy extends BodyComponent with ContactCallbacks{
             ..type = BodyType.dynamic,
           fixtureDefs: [
             FixtureDef(
-                PolygonShape()..setAsBoxXY(enemySize / 2, enemySize / 2),
+              PolygonShape()..setAsBoxXY(enemySize / 2, enemySize / 2),
               friction: 0.3,
             ),
           ],
-    children: [
-      SpriteComponent(
-        sprite: sprite,
-        size: Vector2.all(enemySize),
-        anchor: Anchor.center,
-        position: Vector2(0, 0),
-        ),
-      ],
-    );
+          children: [
+            SpriteComponent(
+              sprite: sprite,
+              size: Vector2.all(enemySize),
+              anchor: Anchor.center,
+              position: Vector2(0, 0),
+            ),
+          ],
+        );
+
+  @override
+  void beginContact(
+    Object other,
+    Contact contact,
+  ) {
+    var interceptVelocity =
+        (contact.bodyA.linearVelocity - contact.bodyB.linearVelocity)
+            .length
+            .abs();
+    if (interceptVelocity > 35) {
+      removeFromParent();
+    }
+    super.beginContact(other, contact);
+  }
 }
