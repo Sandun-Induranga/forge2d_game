@@ -67,4 +67,13 @@ class Enemy extends BodyComponent with ContactCallbacks {
     }
     super.beginContact(other, contact);
   }
+
+  @override
+  update(double dt) {
+    super.update(dt);
+    if (position.x > camera.visibleWorldRect.right + 10 ||
+        position.x < camera.visibleWorldRect.left - 10) {
+      removeFromParent();
+    }
+  }
 }
