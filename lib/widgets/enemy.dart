@@ -1,3 +1,5 @@
+import 'dart:math';
+
 const enemySize = 5.0;
 
 enum EnemyColor {
@@ -17,4 +19,11 @@ enum EnemyColor {
     required this.color,
     required this.boss,
   });
+
+  static EnemyColor get randomColor =>
+      EnemyColor.values[Random().nextInt(EnemyColor.values.length)];
+
+  String get fileName =>
+      'alien${color.capitalize}${boss ? 'suit' : 'square'}.png';
+  }
 }
