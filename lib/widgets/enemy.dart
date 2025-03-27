@@ -1,5 +1,8 @@
 import 'dart:math';
 
+import 'package:flame/components.dart';
+import 'package:flame_forge2d/flame_forge2d.dart';
+
 const enemySize = 5.0;
 
 enum EnemyColor {
@@ -25,5 +28,28 @@ enum EnemyColor {
 
   String get fileName =>
       'alien${color.capitalize}${boss ? 'suit' : 'square'}.png';
-  }
+}
+
+class Enemy extends BodyComponent with ContactCallbacks{
+  Enemy(Vector2 position, Sprite sprite)
+      : super(
+          renderBody: false,
+          bodyDef: BodyDef()
+            ..position = position
+            ..type = BodyType.dynamic,
+          fixtureDefs: [
+            FixtureDef(
+                PolygonShape()..setAsBoxXY(enemySize / 2, enemySize / 2),
+              friction: 0.3,
+            ),
+          ],
+    children: [
+      SpriteComponent(
+        sprite: sprite,
+        size: Vector2.all(enemySize),
+        anchor: Anchor.center,
+        position: Vector2(0, 0),
+        ),
+      ],
+    );
 }
