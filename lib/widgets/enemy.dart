@@ -77,3 +77,7 @@ class Enemy extends BodyComponent with ContactCallbacks {
     }
   }
 }
+
+extension on String {
+  String capitalize() => '${this[0].toUpperCase()}${substring(1)}';
+}
